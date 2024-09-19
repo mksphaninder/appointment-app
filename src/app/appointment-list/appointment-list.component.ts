@@ -11,6 +11,13 @@ export class AppointmentListComponent {
   newAppointmentDate: Date = new Date();
   appointments: Appointment[] =  [];
 
+  ngOnInit() {
+    console.log("got loaded")
+    let savedAppointments = localStorage.getItem("appointments");
+
+    this.appointments = savedAppointments ? JSON.parse(savedAppointments) : [];
+  }
+
   addAppointment() {
     if(this.newAppointmentTitle.trim().length && this.newAppointmentDate) {
       let newAppointment: Appointment = {
@@ -22,9 +29,13 @@ export class AppointmentListComponent {
 
       this.newAppointmentTitle = "";
       this.newAppointmentDate = new Date();
-
-      alert(this.appointments.length);
+      localStorage.setItem("appointments", JSON.stringify(this.appointments))
     }
+  }
+
+  deleteAppointment(index: number) {
+    this.appointments.splice(index,1)
+    localStorage.setItem("appointments", JSON.stringify(this.appointments))
   }
 
 }
